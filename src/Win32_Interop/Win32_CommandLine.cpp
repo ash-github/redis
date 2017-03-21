@@ -153,7 +153,7 @@ public:
         // save [seconds] [changes]
         // or 
         // save ""      -- turns off RDB persistence
-        if (strcmp(argv[argIndex], "\"\"") == 0 || strcmp(argv[argIndex], "''") == 0) {
+        if (strcmp(argv[argIndex], "\"\"") == 0 || strcmp(argv[argIndex], "''") == 0 || strcmp(argv[argIndex], "") == 0) {
             params.push_back(argv[argIndex]);
         } else if (
             isStringAnInt(argv[argIndex]) && 
@@ -310,7 +310,7 @@ public:
         vector<string> params;
         params.push_back(argv[argStartIndex + 1]);
         vector<string> subParams = subCommands[argv[argStartIndex + 1]]->Extract(argStartIndex + 1, argc, argv);
-        for (string p : params) {
+		for (string p : subParams) {
             transform(p.begin(), p.end(), p.begin(), ::tolower);
             p = stripQuotes(p);
             params.push_back(p);
@@ -511,7 +511,6 @@ vector<string> Tokenize(string line)  {
 void ParseConfFile(string confFile, string cwd, ArgumentMap& argMap) {
     ifstream config;
     string line;
-    string value;
 
     char fullConfFilePath[MAX_PATH];
     if (PathIsRelativeA(confFile.c_str())) {
